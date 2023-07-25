@@ -2,4 +2,4 @@ ws/build/
 ws/devel/
 ws/logs/
 ws/.catkin_tools
-*/.vscode/*
+.vscode/
