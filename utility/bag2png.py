@@ -51,6 +51,7 @@ if __name__ == '__main__':
                 cvimg = cv_bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
                 out_fn = os.path.join(out_rgb_dir, fn + '.png')
                 rgb_file.write(fn + ' ' + 'rgb/' + fn + '.png' + '\n')
+                cv2.imwrite(out_fn, cvimg)
                 #print "RGB: ", fn, cvimg.max(), type(cvimg), cvimg.dtype
             elif topic==dep_topic:
                 cvimg = cv_bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
@@ -58,10 +59,11 @@ if __name__ == '__main__':
                 #cvimg = cvimg.astype(np.uint16)            # uncomment this only for astra
                 out_fn = os.path.join(out_dep_dir, fn + '.png')
                 dep_file.write(fn + ' ' + 'depth/' + fn + '.png' + '\n')
+                depth_array = np.array(cvimg, dtype=np.uint16)
+                np.save(out_fn, depth_array)
                 #print "Depth: ", fn, cvimg.min(), cvimg.max(), type(cvimg), cvimg.dtype, cvimg.shape
 
             #cv2.imshow(topic, cvimg)
-            cv2.imwrite(out_fn, cvimg)
             #cv2.waitKey(10)
         except CvBridgeError:
             pass
