@@ -3,3 +3,7 @@ ws/devel/
 ws/logs/
 ws/.catkin_tools
 .vscode/
+.venv/
+*/data/*
+*.DS_Store
+*.pyc
