@@ -84,6 +84,34 @@ $(document).ready(() => {
         pub_msg(obj);
     });
 
+    document.addEventListener("keypress", (e) => {
+        var obj;
+        if (e.key === "w" || e.key === "W" || e.key == "ArrowUp")
+        {
+            obj = "up";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if (e.key === "s" || e.key === "S" || e.key === "ArrowDown")
+        {
+            obj = "down";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if(e.key === "d" || e.key === "D" || e.key === "ArrowRight")
+        {
+            obj = "right";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if(e.key === "a" || e.key === "A" || e.key === "ArrowLeft")
+        {
+            obj = "left";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+    })
+
     $("#input_text").keypress(function(event) {
         var key = (event.keyCode ? event.keyCode : event.which);
         if (key === 13 || key === 'Enter') {
