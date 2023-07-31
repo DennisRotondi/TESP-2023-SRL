@@ -14,27 +14,19 @@ robot_ip = '10.42.0.252'
 robot_connection_1 = connect_to_robot(robot_ip)
 
 def send_command(robot_connection, command):
-    robot_connection.sendall(command.encode('utf-8'))
+    try:
+        robot_connection.sendall(command.encode('utf-8'))
+    except BrokenPipeError:
+        print("Connection lost, reconnecting...")
+        global robot_connection_1
+        robot_connection_1 = connect_to_robot(robot_ip, 50001)
+        robot_connection_1.sendall(command.encode('utf-8'))
+
 
 def callback(data):
     message = data.data
-    time_match = re.match(r'([a-zA-Z]+)(\d*)', message)
-    
-    if time_match:
-        direction, time_ms = time_match.groups()
-        time_s = int(time_ms) / 1000.0 if time_ms else 0
-    else:
-        direction = message
-        time_s = 1
+    send_command(robot_connection_1, message)
 
-    print("Sending command: ",direction)
-    send_command(robot_connection_1, direction)
-
-    # print("Sleeping for: ",time_s," seconds")
-    # rospy.sleep(time_s)
-
-    # print("Stopping")
-    # send_command(robot_connection_1, 'stop')
 
 if __name__ == '__main__':
     rospy.init_node('server', anonymous=True)
