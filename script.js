@@ -82,9 +82,17 @@ $(document).ready(() => {
     $("#actions").on('click', (event) => {
         console.log(event.target);
         var obj = $(event.target).attr("id");
-        log("User: ", obj + execTime);
-        pub_msg(obj + execTime);
+        log("User: ", obj + 1);
+        pub_msg(obj + 1);
     });
+
+    $("#actions2").on('click', (event) => {
+        console.log(event.target);
+        var obj = $(event.target).attr("id");
+        log("User: ", obj + 1);
+        pub_msg(obj + 1);
+    });
+
     document.addEventListener("keydown", (e) => {
         if (e.keyCode === 87 || e.key === "W" || e.key === "w") {
             obj = "up";

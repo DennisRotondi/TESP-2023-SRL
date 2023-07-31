@@ -3,6 +3,7 @@ import rospy
 import socket
 import re
 from std_msgs.msg import String
+from sensor_msgs.msg import CompressedImage
 
 def connect_to_robot(ip, port=50001):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -27,8 +28,13 @@ def callback(data):
     message = data.data
     send_command(robot_connection_1, message)
 
+def callback_picture(data):
+    ros_image_msg = rospy.wait_for_message('/camera/color/image_raw/compressed', CompressedImage)
+    pub.publish(ros_image_msg)
 
 if __name__ == '__main__':
     rospy.init_node('server', anonymous=True)
     rospy.Subscriber("action_tesp", String, callback)
+    pub = rospy.Publisher('/camera/rgb/image_raw_3', CompressedImage, queue_size=10)
+    rospy.Timer(rospy.Duration(0.1), callback_picture)
     rospy.spin()
