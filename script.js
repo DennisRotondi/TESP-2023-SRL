@@ -3,7 +3,8 @@ var ros;
 var pub_text;
 var sub_text;
 var sub_img;
-var execTime;
+var obj = 'l';
+var prevObj = 'l';
 
 function log(who, str) {
     $("#output").val(who + str + "\n" + $("#output").val());
@@ -84,56 +85,35 @@ $(document).ready(() => {
         log("User: ", obj + execTime);
         pub_msg(obj + execTime);
     });
-
-    execTime = document.getElementById("execTime").value;
-
-    document.addEventListener("keypress", (e) => {
-        var obj;
+    document.addEventListener("keydown", (e) => {
         if (e.key === "w" || e.key === "W") {
-            obj = "up" + execTime;
-            log("User: ", obj);
-            pub_msg(obj);
+            obj = "up";
         }
         else if (e.key === "s" || e.key === "S") {
-            obj = "down" + execTime;
-            log("User: ", obj);
-            pub_msg(obj);
+            obj = "down";
         }
         else if (e.key === "d" || e.key === "D") {
-            obj = "right" + execTime;
-            log("User: ", obj);
-            pub_msg(obj);
+            obj = "right";
         }
         else if (e.key === "a" || e.key === "A") {
-            obj = "left" + execTime;
+            obj = "left";
+        }
+
+        if(prevObj !== obj)
+        {
             log("User: ", obj);
             pub_msg(obj);
+            prevObj = obj;
         }
     })
     //keypress doesn't work for arrow keys. Also using keydown with alphbetic gives returns the event twice, 
     // so both are separated with different event listener
-    document.addEventListener("keydown", (e) => {
-        var obj;
-        if (e.key == "ArrowUp") {
-            obj = "up" + execTime;
-            log("User: ", obj);
-            pub_msg(obj);
-        }
-        else if (e.key === "ArrowDown") {
-            obj = "down" + execTime;
-            log("User: ", obj);
-            pub_msg(obj);
-        }
-        else if (e.key === "ArrowRight") {
-            obj = "right" + execTime;
-            log("User: ", obj);
-            pub_msg(obj);
-        }
-        else if (e.key === "ArrowLeft") {
-            obj = "left" + execTime;
-            log("User: ", obj);
-            pub_msg(obj);
-        }
+    document.addEventListener("keyup", (e) => {
+        if(e.key === "a" || e.key === "A" || e.key === "d" || e.key === "D" || e.key === "s" || e.key === "S" || e.key === "w" || e.key === "W")
+        {log("User: ", "stop");
+        pub_msg("stop");
+        prevObj = "stop";
+    }
     })
 
     //  changing execution time
