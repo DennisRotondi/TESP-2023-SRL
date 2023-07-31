@@ -38,32 +38,27 @@ def move_backward(robot_connection, timer = 1):
     time.sleep(timer)
     robot_connection.exec_command('python3 -c "from ev3dev2.motor import OUTPUT_A, OUTPUT_B, MoveTank, SpeedPercent; tank_drive = MoveTank(OUTPUT_A, OUTPUT_B); tank_drive.on(SpeedPercent(0), SpeedPercent(0));"')
 
-import re
-
 def callback(data):
     message = data.data
-    time_match = re.match(r'(\w+)(\d+)', message)
+    time_match = re.match(r'([a-zA-Z]+)(\d*)', message)
     
     if time_match:
         direction, time_ms = time_match.groups()
-        time_s = int(time_ms) / 1000.0
+        time_s = int(time_ms) / 1000.0 if time_ms else 0
     else:
         direction = message
-        time_s = 0.0
+        time_s = 1
 
     if direction == 'right':
-        turn_right(robot_connection_1)
+        turn_right(robot_connection_1, time_s)
     elif direction == 'left':
-        turn_left(robot_connection_1)
+        turn_left(robot_connection_1, time_s)
     elif direction == 'up':
-        move_forward(robot_connection_1)
+        move_forward(robot_connection_1, time_s)
     elif direction == 'down':
-        move_backward(robot_connection_1)
+        move_backward(robot_connection_1, time_s)
 
-    if time_s > 0:
-        delay_ms(robot_connection_1, time_s)
-
-    print(message)
+    print(direction, time_s)
 
 
 
