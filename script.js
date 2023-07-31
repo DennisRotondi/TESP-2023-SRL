@@ -84,6 +84,63 @@ $(document).ready(() => {
         pub_msg(obj);
     });
 
+    document.addEventListener("keypress", (e) => {
+        var obj;
+        if (e.key === "w" || e.key === "W")
+        {
+            obj = "up";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if (e.key === "s" || e.key === "S")
+        {
+            obj = "down";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if(e.key === "d" || e.key === "D")
+        {
+            obj = "right";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if(e.key === "a" || e.key === "A")
+        {
+            obj = "left";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+    })
+    //keypress doesn't work for arrow keys. Also using keydown with alphbetic gives returns the event twice, 
+    // so both are separated with different event listener
+    document.addEventListener("keydown", (e) => {
+        var obj;
+        if (e.key == "ArrowUp")
+        {
+            obj = "up";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if (e.key === "ArrowDown")
+        {
+            obj = "down";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if(e.key === "ArrowRight")
+        {
+            obj = "right";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+        else if(e.key === "ArrowLeft")
+        {
+            obj = "left";
+            log("User: ",obj);
+            pub_msg(obj);
+        }
+    })
+
     $("#input_text").keypress(function(event) {
         var key = (event.keyCode ? event.keyCode : event.which);
         if (key === 13 || key === 'Enter') {
