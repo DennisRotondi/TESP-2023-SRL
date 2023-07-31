@@ -1,1 +1,4 @@
+#stuff to run to setup the server
+python3 -m http.server
+roslaunch rosbridge_server rosbridge_websocket.launch
 roslaunch realsense2_camera rs_camera.launch align_depth:=true
