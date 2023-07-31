@@ -30,32 +30,43 @@
         <!-- robot div -->
         <div id="controllo">
             <div class="row">
-                <div class="btn-group mt-1 mb-1 btn-matrix" role="group" aria-label="Basic outlined example" id="actions">
+                <div class="btn-group mt-1 mb-1 btn-matrix" role="group" aria-label="Basic outlined example"
+                    id="actions">
                     <button type="button" id="take picture" class="btn btn-outline-primary">take picture</button>
                     <button type="button" id="up" class="btn btn-outline-primary">up</button>
                     <button type="button" id="left" class="btn btn-outline-primary">left</button>
                     <button type="button" id="right" class="btn btn-outline-primary">right</button>
                     <button type="button" id="down" class="btn btn-outline-primary">down</button>
                 </div>
-            </div>    
-            <!-- logger online -->
-            <div class="row mt-1">
-                <div class="mb-3">
-                    <h4>Web Logger:</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <textarea class="form-control" disabled id="output" rows="17"></textarea>
-                            <textarea class="form-control mt-2" placeholder = "send text command" id="input_text" rows="1"></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <canvas id="canvas_img" class="img-responsive" width="633" height="470"></canvas>
+
+                <label for="execTime" class="form-label">Execution Time (in ms)</label>
+                <div class="row">
+                    <div class="col">Min: 0</div>
+                    <div class="col" id="currValueExecTime"> Value: 200</div>
+                    <div class="col">Max: 2000</div>
+                </div>
+                <input type="range" class="form-range" id="execTime" min="0" , max="2000" , value="200">
+
+                <div>
+                    <!-- logger online -->
+                    <div class="row mt-1">
+                        <div class="mb-3">
+                            <h4>Web Logger:</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <textarea class="form-control" disabled id="output" rows="17"></textarea>
+                                    <textarea class="form-control mt-2" placeholder="send text command" id="input_text"
+                                        rows="1"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <canvas id="canvas_img" class="img-responsive" width="633" height="470"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
 </body>
 
 </html>

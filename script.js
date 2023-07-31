@@ -3,9 +3,10 @@ var ros;
 var pub_text;
 var sub_text;
 var sub_img;
+var execTime;
 
 function log(who, str) {
-    $("#output").val(who+str + "\n" + $("#output").val());
+    $("#output").val(who + str + "\n" + $("#output").val());
 }
 
 function pub_msg(text) {
@@ -21,16 +22,16 @@ function setup_ros() {
     });
 
     ros.on('connection', () => {
-        log("System: ",'Connection with the robot established.');
+        log("System: ", 'Connection with the robot established.');
     });
 
     ros.on('error', (error) => {
-        log("System: ",'Connection error with the robot.', error);
+        log("System: ", 'Connection error with the robot.', error);
         // close_connection();
     });
 
     ros.on('close', () => {
-        log("System: ",'Connection with the robot has been closed.');
+        log("System: ", 'Connection with the robot has been closed.');
         // close_connection();
     });
 
@@ -47,29 +48,29 @@ function setup_ros() {
     });
 
     sub_img = new ROSLIB.Topic({
-        ros : ros,
-        name : '/camera/rgb/image_raw_3',
-        messageType : 'sensor_msgs/CompressedImage'
+        ros: ros,
+        name: '/camera/rgb/image_raw_3',
+        messageType: 'sensor_msgs/CompressedImage'
     });
 
     sub_text.subscribe(function (text) {
         log("Robot: ", text.data);
     });
-    
+
     // Define a callback function to handle the incoming image data
-    sub_img.subscribe(function(msg) {
+    sub_img.subscribe(function (msg) {
         var img = new Image();
         img.src = "data:image/jpeg;base64," + msg.data;
         // When the image is loaded, draw it on a canvas element
-        img.onload = function() {
+        img.onload = function () {
             // Create a canvas element and set its dimensions to match the image
-            var canvas = document.getElementById('canvas_img');    
+            var canvas = document.getElementById('canvas_img');
             // Get the 2D context of the canvas and draw the image on it
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
         }
     });
-    
+
 }
 
 $(document).ready(() => {
@@ -80,34 +81,32 @@ $(document).ready(() => {
     $("#actions").on('click', (event) => {
         console.log(event.target);
         var obj = $(event.target).attr("id");
-        log("User: ",obj);
-        pub_msg(obj);
+        log("User: ", obj + execTime);
+        pub_msg(obj + execTime);
     });
+
+    execTime = document.getElementById("execTime").value;
 
     document.addEventListener("keypress", (e) => {
         var obj;
-        if (e.key === "w" || e.key === "W")
-        {
-            obj = "up";
-            log("User: ",obj);
+        if (e.key === "w" || e.key === "W") {
+            obj = "up" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
-        else if (e.key === "s" || e.key === "S")
-        {
-            obj = "down";
-            log("User: ",obj);
+        else if (e.key === "s" || e.key === "S") {
+            obj = "down" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
-        else if(e.key === "d" || e.key === "D")
-        {
-            obj = "right";
-            log("User: ",obj);
+        else if (e.key === "d" || e.key === "D") {
+            obj = "right" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
-        else if(e.key === "a" || e.key === "A")
-        {
-            obj = "left";
-            log("User: ",obj);
+        else if (e.key === "a" || e.key === "A") {
+            obj = "left" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
     })
@@ -115,40 +114,43 @@ $(document).ready(() => {
     // so both are separated with different event listener
     document.addEventListener("keydown", (e) => {
         var obj;
-        if (e.key == "ArrowUp")
-        {
-            obj = "up";
-            log("User: ",obj);
+        if (e.key == "ArrowUp") {
+            obj = "up" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
-        else if (e.key === "ArrowDown")
-        {
-            obj = "down";
-            log("User: ",obj);
+        else if (e.key === "ArrowDown") {
+            obj = "down" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
-        else if(e.key === "ArrowRight")
-        {
-            obj = "right";
-            log("User: ",obj);
+        else if (e.key === "ArrowRight") {
+            obj = "right" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
-        else if(e.key === "ArrowLeft")
-        {
-            obj = "left";
-            log("User: ",obj);
+        else if (e.key === "ArrowLeft") {
+            obj = "left" + execTime;
+            log("User: ", obj);
             pub_msg(obj);
         }
     })
 
-    $("#input_text").keypress(function(event) {
+    //  changing execution time
+    document.getElementById("execTime").addEventListener("change", () => {
+        execTime = document.getElementById("execTime").value
+        document.getElementById("currValueExecTime").innerText = "Value: " + execTime
+    })
+
+
+    $("#input_text").keypress(function (event) {
         var key = (event.keyCode ? event.keyCode : event.which);
         if (key === 13 || key === 'Enter') {
             event.preventDefault();
             msg = $("#input_text").val();
             $("#input_text").val('');
-            log("User",msg);
+            log("User", msg);
             pub_msg(msg);
         }
-     });
+    });
 });
