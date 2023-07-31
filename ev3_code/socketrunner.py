@@ -1,6 +1,5 @@
 import socket
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, MoveTank, SpeedPercent
-
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
 
 def handle_command(command):
@@ -16,14 +15,14 @@ def handle_command(command):
     elif command == 'stop':
         tank_drive.on(SpeedPercent(0), SpeedPercent(0))
 
-print("Booting Server ...")
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_address = ('10.42.0.252', 50001)
 sock.bind(server_address)
 sock.listen(1)
 
-print("Server Ready")
+print("[EV3 TCP Socket] Socket Ready")
 
 while True:
     connection, client_address = sock.accept()
