@@ -86,16 +86,16 @@ $(document).ready(() => {
         pub_msg(obj + execTime);
     });
     document.addEventListener("keydown", (e) => {
-        if (e.key === "w" || e.key === "W") {
+        if (e.keyCode === 87 || e.key === "W" || e.key === "w") {
             obj = "up";
         }
-        else if (e.key === "s" || e.key === "S") {
+        else if (e.keyCode === 83 || e.key === "s" || e.key === "S") {
             obj = "down";
         }
-        else if (e.key === "d" || e.key === "D") {
+        else if (e.keyCode === 68 ||e.key === "d" || e.key === "D") {
             obj = "right";
         }
-        else if (e.key === "a" || e.key === "A") {
+        else if (e.keyCode === 	65 || e.key === "a" || e.key === "A") {
             obj = "left";
         }
 
@@ -109,7 +109,7 @@ $(document).ready(() => {
     //keypress doesn't work for arrow keys. Also using keydown with alphbetic gives returns the event twice, 
     // so both are separated with different event listener
     document.addEventListener("keyup", (e) => {
-        if(e.key === "a" || e.key === "A" || e.key === "d" || e.key === "D" || e.key === "s" || e.key === "S" || e.key === "w" || e.key === "W")
+        if(e.keyCode === 87 || e.keyCode === 68 || e.keyCode === 65|| e.keyCode === 83 ||  e.key === "a" || e.key === "A" || e.key === "d" || e.key === "D" || e.key === "s" || e.key === "S" || e.key === "w" || e.key === "W")
         {log("User: ", "stop");
         pub_msg("stop");
         prevObj = "stop";
