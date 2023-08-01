@@ -79,19 +79,19 @@ $(document).ready(() => {
     websocket = "ws://" + ip + ":9090"; //to have a url
     setup_ros(); //connect to ros
 
-    $("#actions").on('click', (event) => {
-        console.log(event.target);
-        var obj = $(event.target).attr("id");
-        log("User: ", obj + 1);
-        pub_msg(obj + 1);
-    });
+    // $("#actions").on('click', (event) => {
+    //     console.log(event.target);
+    //     var obj = $(event.target).attr("id");
+    //     log("User: ", obj + 1);
+    //     pub_msg(obj + 1);
+    // });
 
-    $("#actions2").on('click', (event) => {
-        console.log(event.target);
-        var obj = $(event.target).attr("id");
-        log("User: ", obj + 1);
-        pub_msg(obj + 1);
-    });
+    // $("#actions2").on('click', (event) => {
+    //     console.log(event.target);
+    //     var obj = $(event.target).attr("id");
+    //     log("User: ", obj + 1);
+    //     pub_msg(obj + 1);
+    // });
 
     document.addEventListener("keydown", (e) => {
         if (e.keyCode === 87 || e.key === "W" || e.key === "w") {
