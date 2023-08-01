@@ -103,6 +103,7 @@ $(document).ready(() => {
             || key === "W" || key === "w" || key === "S" || key === "s" 
             || key === "D" || key === "d" || key === "A" || key === "a") {
             event.preventDefault();
+            event.stopPropagation();
             return;
         }
         if (key === 13 || key === 'Enter') {
@@ -126,6 +127,9 @@ $(document).ready(() => {
         }
         else if (e.keyCode === 	65 || e.key === "a" || e.key === "A") {
             obj = "left";
+        }
+        else{
+            return;
         }
 
         if(prevObj !== obj)
