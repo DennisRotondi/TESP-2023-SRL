@@ -99,6 +99,12 @@ $(document).ready(() => {
 
     $("#input_text").keypress(function (event) {
         var key = (event.keyCode ? event.keyCode : event.which);
+        if (key === 87 || key === 83 || key === 68 || key === 65
+            || key === "W" || key === "w" || key === "S" || key === "s" 
+            || key === "D" || key === "d" || key === "A" || key === "a") {
+            event.preventDefault();
+            return;
+        }
         if (key === 13 || key === 'Enter') {
             event.preventDefault();
             msg = $("#input_text").val();
