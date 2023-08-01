@@ -75,7 +75,11 @@ function setup_ros() {
 }
 
 $(document).ready(() => {
-    ip = "127.0.0.1" // or location.hostname
+    const currentUrl = window.location.href;
+    const ip = currentUrl.split(":");
+    if (ip === "localhost"){
+        ip = "127.0.0.1" // or location.hostname
+    };
     websocket = "ws://" + ip + ":9090"; //to have a url
     setup_ros(); //connect to ros
 
