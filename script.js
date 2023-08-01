@@ -139,10 +139,10 @@ $(document).ready(() => {
     }
     })
 
-    //  changing execution time
-    document.getElementById("execTime").addEventListener("change", () => {
-        execTime = document.getElementById("execTime").value
-        document.getElementById("currValueExecTime").innerText = "Value: " + execTime
-    })
+    // //  changing execution time
+    // document.getElementById("execTime").addEventListener("change", () => {
+    //     execTime = document.getElementById("execTime").value
+    //     document.getElementById("currValueExecTime").innerText = "Value: " + execTime
+    // })
 
 });
