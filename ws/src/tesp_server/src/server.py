@@ -31,8 +31,9 @@ def callback_picture(data):
     ros_image_msg = rospy.wait_for_message('/camera/color/image_raw/compressed', CompressedImage)
     pub.publish(ros_image_msg)
 
-def recv_servo_position(robot_connection):
-    data = robot_connection.recv(1024) # get servo position from EV3
+def recv_servo_position(event):  # change to accept TimerEvent object
+    global robot_connection_init
+    data = robot_connection_init.recv(1024) # get servo position from EV3
     if data:
         servo_pub.publish(int(data)) # publish servo position
 
