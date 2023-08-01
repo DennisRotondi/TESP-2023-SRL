@@ -110,10 +110,10 @@ $(document).ready(() => {
 
     document.addEventListener("keydown", (e) => {
         if (e.keyCode === 87 || e.key === "W" || e.key === "w") {
-            obj = "up";
+            obj = "forward";
         }
         else if (e.keyCode === 83 || e.key === "s" || e.key === "S") {
-            obj = "down";
+            obj = "backward";
         }
         else if (e.keyCode === 68 ||e.key === "d" || e.key === "D") {
             obj = "right";
