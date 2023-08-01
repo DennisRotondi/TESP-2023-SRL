@@ -2,3 +2,19 @@
 python3 -m http.server
 roslaunch rosbridge_server rosbridge_websocket.launch
 roslaunch realsense2_camera rs_camera.launch align_depth:=true
+
+# To run the robot
+
+## Robot TCP listener
+
+ssh robot@10.42.0.252
+cd TESP-2023-SRL/ev3_code
+python3 socketrunner.py
+
+>>> wait until booting is confirmed (message in terminal)
+>>> once booting is confirmed, you can run the local ros node that
+    relays commands from webinterface to the ev3
+
+## Local node
+
+rosun tesp_server server.py
