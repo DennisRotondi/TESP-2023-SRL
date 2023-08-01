@@ -103,7 +103,7 @@ $(document).ready(() => {
             event.preventDefault();
             msg = $("#input_text").val();
             $("#input_text").val('');
-            log("User", msg);
+            log("User: ", msg);
             pub_msg(msg);
         }
     });
