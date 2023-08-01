@@ -75,7 +75,7 @@ function setup_ros() {
 }
 
 $(document).ready(() => {
-    const currentUrl = window.location.href;
+    const currentUrl = window.location.host;
     const ip = currentUrl.split(":");
     if (ip === "localhost"){
         ip = "127.0.0.1" // or location.hostname
