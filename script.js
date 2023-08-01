@@ -76,7 +76,7 @@ function setup_ros() {
 
 $(document).ready(() => {
     const currentUrl = window.location.host;
-    const ip = currentUrl.split(":");
+    const ip = currentUrl.split(":")[0];
     if (ip === "localhost"){
         ip = "127.0.0.1" // or location.hostname
     };
@@ -96,6 +96,17 @@ $(document).ready(() => {
     //     log("User: ", obj + 1);
     //     pub_msg(obj + 1);
     // });
+
+    $("#input_text").keypress(function (event) {
+        var key = (event.keyCode ? event.keyCode : event.which);
+        if (key === 13 || key === 'Enter') {
+            event.preventDefault();
+            msg = $("#input_text").val();
+            $("#input_text").val('');
+            log("User", msg);
+            pub_msg(msg);
+        }
+    });
 
     document.addEventListener("keydown", (e) => {
         if (e.keyCode === 87 || e.key === "W" || e.key === "w") {
@@ -134,15 +145,4 @@ $(document).ready(() => {
         document.getElementById("currValueExecTime").innerText = "Value: " + execTime
     })
 
-
-    $("#input_text").keypress(function (event) {
-        var key = (event.keyCode ? event.keyCode : event.which);
-        if (key === 13 || key === 'Enter') {
-            event.preventDefault();
-            msg = $("#input_text").val();
-            $("#input_text").val('');
-            log("User", msg);
-            pub_msg(msg);
-        }
-    });
 });
