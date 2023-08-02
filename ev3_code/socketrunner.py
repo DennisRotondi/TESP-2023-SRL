@@ -15,6 +15,7 @@ def handle_command(command):
     elif command == 'stop':
         tank_drive.on(SpeedPercent(0), SpeedPercent(0))
 
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_address = ('10.42.0.252', 50001)
@@ -31,5 +32,6 @@ while True:
             if not data:  # If data is empty, break the loop
                 break
             print(data)
+            handle_command(data.decode('utf-8'))
     finally:
         connection.close()
