@@ -1,21 +1,20 @@
-from math import pi, sqrt, atan2
-# import copy
+from math import pi, sqrt, atan2, degrees, radians
 
 class ObstacleAvoidance():
 
     def __init__(self) -> None:
         self.min_gap=0.1
-        self.fov=pi/2
         self.too_far=1
+        self.fov=pi/2
         self.target_distance=None
         self.right_border_fov=self.fov/2
         self.left_border_fov=-self.right_border_fov
-        self.obstacle_param=['theta','depth','length','isTarget']
+        self.obstacle_param=['left','right','depth','id']
 
     def parse(self,obst_string):
         obstacles=obst_string.split(';') if ';' in obst_string else [obst_string]
         obstacles=[x.split(',') for x in obstacles if len(x)>0]
-        obstacles=[{self.obstacle_param[i]:float(y) if i<len(x)-1 else y.lower()=='true' for i,y in enumerate(x)} for x in obstacles]
+        obstacles=[{self.obstacle_param[i]:float(y) for i,y in enumerate(x)} for x in obstacles]
         return obstacles
     
     def get_left_border_fov(self):
@@ -31,10 +30,9 @@ class ObstacleAvoidance():
         opposite=obstacle['depth']
         adjacent=self.get_side_length(obstacle)
         hypotenuse=sqrt(adjacent**2+opposite**2)
-        s=opposite/hypotenuse
-        c=adjacent/hypotenuse
+        c=opposite/hypotenuse
+        s=adjacent/hypotenuse
         angle=atan2(s,c)
-        angle=(pi/2)-angle
         angle=abs(angle)
         left=obstacle['theta']-angle
         right=obstacle['theta']+angle
@@ -45,8 +43,7 @@ class ObstacleAvoidance():
     def is_close_enough(self,obstacle):
         return obstacle['depth']<=self.too_far and (self.target_distance is None or obstacle['depth']<=self.target_distance)
     
-    def get_borders_angles(self,obstacles):
-        borders=[self.get_border_angles(o) for o in obstacles if self.is_close_enough(o)]
+    def get_borders_angles(self,borders):
         adjusted=[borders[0]]
         for b in borders[1:]:
             if b['left']<adjusted[-1]['right']:
@@ -58,7 +55,7 @@ class ObstacleAvoidance():
     def get_gap_angles(self,obstacles):
         if len(obstacles)==0: return [{'left':self.get_left_border_fov(),'right':self.get_right_border_fov(),'gap_angle':self.fov}]
         lrs=self.get_borders_angles(obstacles)
-        angles=[{'left':self.get_left_border_fov(),'right':lrs[0]['left']}]+[{'left':lrs[i-1]['right'],'right':lrs[i]['left']} for i in range(1,len(lrs))]+[{'left':lrs[-1]['right'],'right':self.get_right_border_fov()}]
+        angles=[{'depth_left':self.too_far,'depth_right':lrs[0]['depth'],'left':self.get_left_border_fov(),'right':lrs[0]['left']}]+[{'depth_left':lrs[i-1]['depth'],'depth_right':lrs[i]['depth'],'left':lrs[i-1]['right'],'right':lrs[i]['left']} for i in range(1,len(lrs))]+[{'depth_left':lrs[-1]['depth'],'depth_right':self.too_far,'left':lrs[-1]['right'],'right':self.get_right_border_fov()}]
         if angles[0]['right']==self.left_border_fov:
             angles=angles[1:]
         if angles[-1]['left']==self.right_border_fov:
@@ -71,35 +68,33 @@ class ObstacleAvoidance():
         angles=self.get_gap_angles(obstacles)
         valid_gaps=[a for a in angles if abs(a['gap_angle'])>self.min_gap]
         for a in valid_gaps:
-            if a['left']<0 and a['right']>0 and abs(a['gap_angle'])>self.min_gap:
+            if a['left']<0 and a['right']>0:
                 if abs(a['left'])<self.min_gap/2:
-                    return abs(a['gap_angle']),-self.min_gap
-                elif a['right']<self.min_gap:
-                    return abs(a['gap_angle']),self.min_gap
-                else: return abs(a['gap_angle']),0
+                    return a['depth_left'],a['left']+self.min_gap/2
+                elif a['right']<self.min_gap/2:
+                    return a['depth_right'],a['right']-self.min_gap/2
+                else: 
+                    return min(a['depth_left'],a['depth_right']),0
         possible_angles=[vg for vg in valid_gaps]
-        angle=self.get_angle_from_gap(possible_angles[0]['left'],possible_angles[0]['right'])
-        gap_angle=possible_angles[0]['gap_angle']
+        depth,angle=self.get_angle_from_gap(possible_angles[0])
         for pa in possible_angles[1:]:     
-            a=self.get_angle_from_gap(pa['left'],pa['right'])    
+            d,a=self.get_angle_from_gap(pa)    
             if abs(a)<abs(angle):
                 angle=a
-                gap_angle=pa['gap_angle']
-        return gap_angle,angle
+                depth=d
+        return depth,angle
     
-    def get_angle_from_gap(self,left,right):
-        if right<0:
-            return right-self.min_gap/2
-        elif left>0:
-            return left+self.min_gap/2
-        else:
-            return (right-left)/2
+    def get_angle_from_gap(self,gap):
+        if gap['right']<0:
+            return gap['depth_right'],gap['right']-self.min_gap/2
+        elif gap['left']>0:
+            return gap['depth_left'],gap['left']+self.min_gap/2
     
     def avoid(self,obstacles):
         if isinstance(obstacles,str):
             obstacles=self.parse(obstacles)
-        obstacles=[o for o in obstacles if not o['isTarget']]
+        obstacles=[o for o in obstacles if o['id']!=1]
         gap,angle=self.get_best_angle(obstacles)
-        return str(gap)+','+str(angle)
+        return str(gap)+','+str(angle)+',0'
 
 

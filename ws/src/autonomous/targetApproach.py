@@ -1,5 +1,4 @@
 from obstacle_avoidance import ObstacleAvoidance
-from math import radians
 
 class TargetApproach():
     def __init__(self) -> None:
@@ -8,25 +7,23 @@ class TargetApproach():
     
     def walk(self,objs):
         objs=self.obstacle_avoidance.parse(objs)
-        print(objs)
+        if len(objs)==0:
+            return self.obstacle_avoidance.too_far,0,0
         target=None
         for o in objs:
-            if o['isTarget']:
-                target=o
-        print(target)
+            if o['id']==1:
+                if target is None or o['depth']<target['depth']:
+                    target=o
         if target is not None:
-            self.obstacle_avoidance.target_distance=target['depth']
+            self.obstacle_avoidance.target_distance=min(self.obstacle_avoidance.too_far,target['depth'])
         else:
             self.obstacle_avoidance.target_distance=None
         objs=[o for o in objs if self.obstacle_avoidance.is_close_enough(o)]
-        print(objs)
         if target is not None and len(objs)==1:
             return self.approach(target)
         else:
             return self.obstacle_avoidance.avoid(objs)
 
     def approach(self,target):
-        lr=self.obstacle_avoidance.get_border_angles(target)
-        print(str(lr['right']-lr['left'])+','+str(target['theta']))
-        target['theta']=radians(target['theta'])
-        return str(lr['right']-lr['left'])+','+str(target['theta'])
+        gap=target['right']-target['left']
+        return str(target['depth'])+','+str(gap/2)+',1'
