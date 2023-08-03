@@ -1,11 +1,12 @@
 from math import pi, sqrt, atan2, degrees, radians
+# import copy
 
 class ObstacleAvoidance():
 
-    def __init__(self) -> None:
-        self.min_gap=0.1
-        self.too_far=1
-        self.fov=pi/2
+    def __init__(self,min_gap,too_far,fov) -> None:
+        self.min_gap=min_gap
+        self.too_far=too_far
+        self.fov=fov
         self.target_distance=None
         self.right_border_fov=self.fov/2
         self.left_border_fov=-self.right_border_fov

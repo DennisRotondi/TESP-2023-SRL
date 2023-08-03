@@ -1,11 +1,11 @@
 from obstacle_avoidance import ObstacleAvoidance
 
 class TargetApproach():
-    def __init__(self) -> None:
+    def __init__(self,min_gap,too_far,fov) -> None:
         super(TargetApproach, self).__init__()
-        self.obstacle_avoidance=ObstacleAvoidance()
+        self.obstacle_avoidance=ObstacleAvoidance(min_gap,too_far,fov)
     
-    def walk(self,objs):
+    def compute_direction(self,objs):
         objs=self.obstacle_avoidance.parse(objs)
         if len(objs)==0:
             return self.obstacle_avoidance.too_far,0,0

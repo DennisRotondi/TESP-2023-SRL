@@ -2,14 +2,14 @@ from math import sin, cos, pi
 
 class Velocities():
     
-    def __init__(self) -> None:
-        self.default=50
-        self.default_angular=pi/4
-        self.eps=0.1
-        self.min_distance=0.3
-        self.max_velocity_change=10
-        self.max_angular_velocity_change=pi/8
-        self.stop_target_distance=0.1
+    def __init__(self,default,default_angular,eps,min_distance,max_velocity_change,max_angular_velocity_change,stop_target_distance) -> None:
+        self.default=default
+        self.default_angular=default_angular
+        self.eps=eps
+        self.min_distance=min_distance
+        self.max_velocity_change=max_velocity_change
+        self.max_angular_velocity_change=max_angular_velocity_change
+        self.stop_target_distance=stop_target_distance
         self.params_names=['depth','theta','id']
         self.current_velocity=self.default
         self.current_angular_velocity=self.default_angular
