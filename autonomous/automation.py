@@ -5,7 +5,7 @@ from velocities import Velocities
 class Automation():
     def __init__(self) -> None:
         min_gap=1
-        too_far=1
+        too_far=2
         fov=pi/2
         default=50
         default_angular=pi/4
