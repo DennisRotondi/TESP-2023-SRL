@@ -12,7 +12,7 @@ class Velocities():
         self.stop_target_distance=stop_target_distance
         self.params_names=['depth','theta','id']
         self.current_velocity=self.default
-        self.current_angular_velocity=self.default_angular
+        self.current_angular_velocity=0
 
     def parse(self,depth_theta):
         depth_theta=depth_theta.split(',')
@@ -26,7 +26,10 @@ class Velocities():
         
         if depth_theta['depth']>self.min_distance and self.current_velocity<self.default:
             self.current_velocity=min(self.current_velocity+self.max_velocity_change,self.default)
-            self.current_angular_velocity=min(self.current_angular_velocity+self.max_angular_velocity_change,self.default_angular)
+            if abs(depth_theta['theta'])>0:
+                self.current_angular_velocity=min(self.current_angular_velocity+self.max_angular_velocity_change,self.default_angular)
+            else:                
+                self.current_angular_velocity=max(self.current_angular_velocity-self.max_angular_velocity_change,0)
         elif depth_theta['depth']<self.min_distance:
             mult=(depth_theta['depth']-self.stop_target_distance*(depth_theta['id']==1))+self.eps*(depth_theta['id']!=1)
             self.current_velocity=max(self.current_velocity*mult,self.current_velocity-self.max_velocity_change)

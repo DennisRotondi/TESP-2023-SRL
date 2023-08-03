@@ -77,6 +77,8 @@ class ObstacleAvoidance():
                 else: 
                     return min(a['depth_left'],a['depth_right']),0
         possible_angles=[vg for vg in valid_gaps]
+        if len(possible_angles)==0:
+            return self.too_far,0
         depth,angle=self.get_angle_from_gap(possible_angles[0])
         for pa in possible_angles[1:]:     
             d,a=self.get_angle_from_gap(pa)    
