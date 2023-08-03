@@ -1,7 +1,6 @@
 import socket
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, MoveTank, MediumMotor, SpeedPercent
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, MoveTank, SpeedPercent
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
-servo = MediumMotor(OUTPUT_C) # Assuming the servo motor is connected to port C
 
 def handle_command(command):
     command = command.strip()
@@ -15,11 +14,7 @@ def handle_command(command):
         tank_drive.on(SpeedPercent(-50), SpeedPercent(50))
     elif command == 'stop':
         tank_drive.on(SpeedPercent(0), SpeedPercent(0))
-    elif command.startswith('servo'): # Handle servo commands
-        degrees = int(command[5:])
-        servo.on_to_position(SpeedPercent(50), degrees)
-        
-    return str(servo.position) # return current position of the servo
+
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -37,7 +32,6 @@ while True:
             if not data:  # If data is empty, break the loop
                 break
             print(data)
-            servo_position = handle_command(data.decode('utf-8'))
-            connection.sendall(servo_position.encode('utf-8')) # send servo position to the main laptop
+            handle_command(data.decode('utf-8'))
     finally:
         connection.close()
